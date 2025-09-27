@@ -4,7 +4,6 @@ import { badRequest, serverError } from "../helpers/http-helper";
 import { Controller } from "../protocols/controller";
 import { EmailValidator } from "../protocols/email-validator";
 import { InvalidParamError } from "../erros/invalid-params-erros";
-import { ServerError } from "../erros/server-erro";
 export class SignUpController implements Controller {
   emailValidator: EmailValidator;
   constructor(emailValidator: EmailValidator) {
@@ -32,10 +31,7 @@ export class SignUpController implements Controller {
         body: { message: "Sign up successful" },
       };
     } catch (error) {
-      return {
-        statusCode: 500,
-        body: new ServerError(),
-      };
+      return serverError();
     }
   }
 }

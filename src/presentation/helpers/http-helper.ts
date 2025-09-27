@@ -1,4 +1,5 @@
 import { MissingParamError } from "../erros/missing-params-erros";
+import { ServerError } from "../erros/server-erro";
 import { HttpResponse } from "../protocols/https";
 
 export const badRequest = (error: Error): HttpResponse => {
@@ -10,5 +11,6 @@ export const badRequest = (error: Error): HttpResponse => {
 export const serverError = (): HttpResponse => {
   return {
     statusCode: 500,
+    body: new ServerError(),
   };
 };
