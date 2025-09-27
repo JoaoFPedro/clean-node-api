@@ -1,6 +1,5 @@
-import { MissingParamError } from "../erros/missing-params-erros";
 import { ServerError } from "../erros/server-erro";
-import { HttpResponse } from "../protocols/https";
+import { HttpResponse } from "../protocols";
 
 export const badRequest = (error: Error): HttpResponse => {
   return {
