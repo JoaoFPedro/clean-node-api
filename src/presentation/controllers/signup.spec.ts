@@ -116,9 +116,13 @@ describe("SignUp Controller", () => {
     expect(jestSpy).toHaveBeenCalledWith("any_email@mail.com");
   });
   test("Should return 500 if EmailValidator throws", () => {
-    const emailValidatorWithError = makeEmailValidatorWithError();
+    // const emailValidatorWithError = makeEmailValidatorWithError();
+    // const sut = new SignUpController(emailValidatorWithError);
+    const { sut, emailValidatorStub } = makeSut();
+    jest.spyOn(emailValidatorStub, "isValid").mockImplementationOnce(() => {
+      throw new Error();
+    });
 
-    const sut = new SignUpController(emailValidatorWithError);
     const httpRequest = {
       body: {
         name: "any_name",
