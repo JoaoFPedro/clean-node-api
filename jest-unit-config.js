@@ -1,3 +1,6 @@
-const config = required("./jest.config");
-config.testMatch = ["**/*.spec.ts"];
-module.exports = config;
+const baseConfig = require("./jest.config.ts");
+
+module.exports = {
+  ...baseConfig.default,
+  testMatch: ["**/*.spec.ts"],
+};
