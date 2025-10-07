@@ -11,7 +11,7 @@ export class DbAddAccount implements AddAccount {
     this.encrypter = encrypter;
   }
   async add(account: AddAccountModel): Promise<AccountModel | null> {
-    this.encrypter.encrypt(account.password);
+    await this.encrypter.encrypt(account.password);
     return null;
   }
 }
