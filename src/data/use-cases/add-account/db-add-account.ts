@@ -16,13 +16,15 @@ export class DbAddAccount implements AddAccount {
     this.encrypter = encrypter;
     this.addAccountRepositoryStub = addAccountRepositoryStub;
   }
-  async add(account: AddAccountModel): Promise<AccountModel | null> {
-    const encryptPassword = await this.encrypter.encrypt(account.password);
+  async add(accountData: AddAccountModel): Promise<AccountModel | null> {
+    const encryptPassword = await this.encrypter.encrypt(accountData.password);
     const accountWithEncryptedPassword = {
-      ...account,
+      ...accountData,
       password: encryptPassword,
     };
-    await this.addAccountRepositoryStub.add(accountWithEncryptedPassword);
-    return null;
+    const account = await this.addAccountRepositoryStub.add(
+      accountWithEncryptedPassword
+    );
+    return account;
   }
 }
