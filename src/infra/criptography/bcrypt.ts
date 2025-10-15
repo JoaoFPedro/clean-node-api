@@ -1,7 +1,7 @@
 import { Encrypter } from "../../data/protocols/encrypter";
 import bcrypt from "bcrypt";
 
-export class BCrypter implements Encrypter {
+export class BCrypterAdapter implements Encrypter {
   salt: number;
   constructor(salt: number) {
     this.salt = salt;
