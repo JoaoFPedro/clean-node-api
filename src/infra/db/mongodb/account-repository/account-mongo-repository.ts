@@ -15,11 +15,6 @@ export class AccountMongoRepository implements AddAccountRepository {
     if (!result) return null;
 
     const { _id, ...accountWithoutId } = result;
-    return {
-      id: result._id.toString(),
-      name: result.name,
-      email: result.email,
-      password: result.password,
-    };
+    return result ? MongoHelper.map(result) : null;
   }
 }
