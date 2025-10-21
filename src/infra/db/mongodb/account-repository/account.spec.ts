@@ -12,9 +12,17 @@ describe("insert", () => {
   afterAll(async () => {
     await MongoHelper.disconnect();
   });
-
-  it("Should Return an account on sucess", async () => {
+  interface SutType {
+    sut: AccountMongoRepository;
+  }
+  const makeSut = (): SutType => {
     const sut = new AccountMongoRepository();
+    return {
+      sut,
+    };
+  };
+  it("Should Return an account on sucess", async () => {
+    const { sut } = makeSut();
     const account = await sut.add({
       name: "any_name",
       email: "any_email@mail.com",
