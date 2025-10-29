@@ -14,7 +14,6 @@ export class AccountMongoRepository implements AddAccountRepository {
     });
     if (!result) return null;
 
-    const { _id, ...accountWithoutId } = result;
     return result ? MongoHelper.map(result) : null;
   }
 }
