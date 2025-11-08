@@ -14,7 +14,7 @@ describe("insert", () => {
   });
   beforeEach(async () => {
     const accountCollection = MongoHelper.getCollection("accounts");
-    await accountCollection.deleteMany({});
+    await accountCollection?.deleteMany({});
   });
   interface SutType {
     sut: AccountMongoRepository;
