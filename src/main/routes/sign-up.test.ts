@@ -22,7 +22,7 @@ describe("Sign Up Routes", () => {
         name: "any_name",
         email: "any_email@mail.com",
         password: "any_password",
-        confirmationPass: "any_password",
+        confirmationPassword: "any_password",
       })
       .expect(200);
   });
