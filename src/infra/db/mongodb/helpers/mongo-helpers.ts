@@ -21,13 +21,17 @@ export const MongoHelper = {
 
   async disconnect(): Promise<void> {
     await this.client?.close();
+    this.client = null;
     if (this.memoryServer) {
       await this.memoryServer.stop();
       console.log("🧹 MongoDB em memória parado");
     }
   },
 
-  getCollection(name: string) {
+  async getCollection(name: string) {
+    if (!this.client) {
+      await this.connect(this.uri || undefined);
+    }
     return this.client?.db()?.collection(name);
   },
   map: (collection: any): any => {
