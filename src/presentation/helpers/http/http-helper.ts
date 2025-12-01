@@ -1,5 +1,5 @@
-import { ServerError } from "../erros/server-erro";
-import { HttpResponse } from "../protocols";
+import { ServerError, UnauthorizedError } from "../../erros";
+import { HttpResponse } from "../../protocols";
 
 export const badRequest = (error: Error): HttpResponse => {
   return {
@@ -11,6 +11,12 @@ export const serverError = (error: Error): HttpResponse => {
   return {
     statusCode: 500,
     body: new ServerError(error.stack),
+  };
+};
+export const unauthorized = () => {
+  return {
+    statusCode: 401,
+    body: new UnauthorizedError(),
   };
 };
 export const success = (data: any): HttpResponse => {
