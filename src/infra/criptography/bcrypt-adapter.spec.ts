@@ -20,12 +20,12 @@ describe("Bcrypt Adapter", () => {
   test("Should call bcrypt with correct value", async () => {
     const { sut } = makeSut();
     const encryptSpy = jest.spyOn(bcrypt, "hash");
-    await sut.encrypt("any_value");
+    await sut.hash("any_value");
     expect(encryptSpy).toHaveBeenCalledWith("any_value", 12);
   });
   test("Should a hash on success case", async () => {
     const { sut } = makeSut();
-    const hash = await sut.encrypt("any_value");
+    const hash = await sut.hash("any_value");
     console.log(hash);
     expect(hash).toBe("hash");
   });
@@ -35,7 +35,7 @@ describe("Bcrypt Adapter", () => {
       .spyOn(bcrypt, "hash")
       .mockImplementationOnce(() => Promise.reject(new Error()));
 
-    const promise = sut.encrypt("any_value");
+    const promise = sut.hash("any_value");
     await expect(promise).rejects.toThrow();
   });
 });
