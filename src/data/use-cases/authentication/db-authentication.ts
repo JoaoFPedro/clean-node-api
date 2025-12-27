@@ -25,7 +25,7 @@ export class DbAuthentication implements Authentication {
     this.updateAccessTokenRepository = updateAccessTokenRepository;
   }
   async auth(authenticantion: AuthenticationModel): Promise<string | null> {
-    const loadAccount = await this.loadAccountByEmailRepositoryStub.load(
+    const loadAccount = await this.loadAccountByEmailRepositoryStub.loadByEmail(
       authenticantion.email
     );
     if (loadAccount) {
@@ -35,7 +35,10 @@ export class DbAuthentication implements Authentication {
       );
       if (isValid) {
         const token = await this.encrypter.encrypt(loadAccount.id);
-        await this.updateAccessTokenRepository.update(loadAccount.id, token);
+        await this.updateAccessTokenRepository.updateAccessToken(
+          loadAccount.id,
+          token
+        );
         return token;
       }
     }
