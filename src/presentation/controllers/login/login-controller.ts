@@ -14,13 +14,10 @@ import {
 } from "./login-controller-protocols";
 
 export class LoginController implements Controller {
-  private readonly validation: Validation;
-  private readonly authenticantion: Authentication;
-
-  constructor(validation: Validation, authenticantion: Authentication) {
-    this.validation = validation;
-    this.authenticantion = authenticantion;
-  }
+  constructor(
+    private readonly validation: Validation,
+    private readonly authenticantion: Authentication
+  ) {}
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const error = this.validation.validate(httpRequest.body);
