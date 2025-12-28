@@ -7,8 +7,11 @@ import {
 } from "../../helpers/http/http-helper";
 
 import { Validation } from "../../protocols/validation";
-import { LoginController } from "./login";
-import { Authentication, AuthenticationModel } from "./login-protocols";
+import { LoginController } from "./login-controller";
+import {
+  Authentication,
+  AuthenticationModel,
+} from "./login-controller-protocols";
 
 interface SutType {
   sut: LoginController;

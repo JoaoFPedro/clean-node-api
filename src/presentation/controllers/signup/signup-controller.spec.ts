@@ -5,7 +5,7 @@ import {
 import { AccountModel } from "../../../domain/models/account";
 import { MissingParamError, ServerError } from "../../erros";
 import { EmailValidator, HttpRequest } from "../../protocols";
-import { SignUpController } from "./signup";
+import { SignUpController } from "./signup-controller";
 import { Validation } from "../../protocols/validation";
 import {
   serverError,
