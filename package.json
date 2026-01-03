@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "sucrase-node src/main/server.ts",
+    "start": "node dist/main/server.js",
+    "build": "rimraf dist && tsc",
+    "dev": "sucrase-node src/main/server.ts",
     "test": "jest --passWithNoTests --silent --runInBand",
     "test:unit": "npm test -- --watch -c jest-unit-config.js",
     "test:integration": "npm test -- --watch -c jest-integration-config.js",
@@ -37,6 +39,7 @@
     "lint-staged": "^16.1.6",
     "mongodb-memory-server": "^10.3.0",
     "nodemon": "^3.1.10",
+    "rimraf": "^6.1.2",
     "sucrase": "^3.35.0",
     "supertest": "^7.1.4",
     "ts-jest": "^29.4.1",
