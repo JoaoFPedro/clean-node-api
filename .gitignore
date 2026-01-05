@@ -2,3 +2,6 @@ node_modules
 dist
 coverage
 mcp-servers
+data
+anotacoes.md
+.vscode
