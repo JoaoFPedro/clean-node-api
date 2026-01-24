@@ -1,11 +1,7 @@
-import {
-  InvalidParamError,
-  MissingParamError,
-  ServerError,
-} from "../../../erros";
-import { EmailValidator, HttpRequest, HttpResponse } from "../../../protocols";
-import { Validation } from "../../../protocols/validation";
+import { InvalidParamError } from "../../../presentation/erros";
+import { EmailValidator } from "../../protocols/email-validator";
 import { EmailValidation } from "../email-validation";
+import { Validation } from "../../../presentation/protocols/validation";
 
 //Factory
 const makeEmailValidator = (): EmailValidator => {
@@ -17,7 +13,7 @@ const makeEmailValidator = (): EmailValidator => {
   return new EmailValidatorStub();
 };
 
-const makeFakeRequest = (): HttpRequest => {
+const makeFakeRequest = () => {
   return {
     body: {
       name: "any_name",

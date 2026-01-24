@@ -1,11 +1,11 @@
-import { InvalidParamError, MissingParamError } from "../../erros";
-import { EmailValidator } from "../../protocols";
-import { Validation } from "../../protocols/validation";
+import { InvalidParamError, MissingParamError } from "../../presentation/erros";
+import { EmailValidator } from "../protocols/email-validator";
+import { Validation } from "../../presentation/protocols/validation";
 
 export class EmailValidation implements Validation {
   constructor(
     private readonly emailValidator: EmailValidator,
-    private readonly fieldName: string
+    private readonly fieldName: string,
   ) {}
   validate(input: any): Error | null | undefined {
     const isValid = this.emailValidator.isValid(input[this.fieldName]);

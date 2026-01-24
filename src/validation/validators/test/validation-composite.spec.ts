@@ -1,6 +1,9 @@
-import { InvalidParamError, MissingParamError } from "../../../erros";
+import {
+  InvalidParamError,
+  MissingParamError,
+} from "../../../presentation/erros";
 import { CompareFields } from "..";
-import { Validation } from "../../../protocols/validation";
+import { Validation } from "../../../presentation/protocols/validation";
 import { ValidationComposite } from "../validation-composite";
 class ValidationStub implements Validation {
   validate(input: any): Error | null | undefined {
