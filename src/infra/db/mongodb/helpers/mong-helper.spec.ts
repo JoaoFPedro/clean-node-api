@@ -2,7 +2,7 @@ import { MongoHelper as sut } from "./mongo-helpers";
 
 describe("Sign Up Routes", () => {
   beforeAll(async () => {
-    await sut.connect(process.env.MONGO_URL);
+    await sut.connect(process.env.MONGO_URL as string);
   });
 
   afterAll(async () => {
