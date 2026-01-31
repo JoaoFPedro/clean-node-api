@@ -1,15 +1,18 @@
 import request from "supertest";
-import app from "../config/app";
-import { MongoHelper } from "../../infra/db/mongodb/helpers/mongo-helpers";
+import { setupApp } from "../../config/app";
+import { Express } from "express";
+import { MongoHelper } from "../../../infra/db/mongodb/helpers/mongo-helpers";
 import { Collection } from "mongodb";
 import { hash } from "bcrypt";
 
 describe("Login Routes", () => {
   let accountCollection: Collection | undefined;
+  let app: Express;
 
   beforeAll(async () => {
     const mongoUrl = process.env.MONGO_URL || "mongodb://localhost:27017/jest";
     await MongoHelper.connect(mongoUrl);
+    app = await setupApp();
   });
 
   afterAll(async () => {
