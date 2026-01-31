@@ -1,7 +1,14 @@
 import request from "supertest";
-import app from "../config/app";
+import { setupApp } from "../config/app";
+import { Express } from "express";
 
 describe("Content-type Middleware", () => {
+  let app: Express;
+
+  beforeAll(async () => {
+    app = await setupApp();
+  });
+
   it("Should return default content-type as json", async () => {
     app.get("/content-type", (req, res) => {
       res.send();
