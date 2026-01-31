@@ -1,5 +1,5 @@
 import { LogControllerDecorator } from "../../../decorators/log-controller-decorator";
-import { SignUpController } from "../../../../presentation/controllers/signup/signup-controller";
+import { SignUpController } from "../../../../presentation/controllers/login/signup/signup-controller";
 import { Controller } from "../../../../presentation/protocols";
 import { LogMongoRepository } from "../../../../infra/db/mongodb/log/log-mongo-repository";
 import { makeSingUpValidation } from "./signup-validation";
