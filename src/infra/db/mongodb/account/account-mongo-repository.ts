@@ -7,7 +7,7 @@ import { MongoHelper } from "../helpers/mongo-helpers";
 import {
   AccountModel,
   AddAccountModel,
-} from "../../../../presentation/controllers/signup/signup-controller-protocols";
+} from "../../../../presentation/controllers/login/signup/signup-controller-protocols";
 
 export class AccountMongoRepository
   implements
@@ -38,7 +38,7 @@ export class AccountMongoRepository
         $set: {
           accessToken: token,
         },
-      }
+      },
     );
   }
 }
