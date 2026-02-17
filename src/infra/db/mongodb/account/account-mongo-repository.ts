@@ -8,12 +8,14 @@ import {
   AccountModel,
   AddAccountModel,
 } from "../../../../presentation/controllers/login/signup/signup-controller-protocols";
+import { LoadAccountByToken } from "../../../../domain/use-cases/load-account-by-token";
 
 export class AccountMongoRepository
   implements
     AddAccountRepository,
     LoadAccountByEmailRepository,
-    UpdateAccessTokenRepository
+    UpdateAccessTokenRepository,
+    LoadAccountByToken
 {
   async add(account: AddAccountModel): Promise<AccountModel | null> {
     const accountCollection = await MongoHelper.getCollection("accounts");
@@ -40,5 +42,23 @@ export class AccountMongoRepository
         },
       },
     );
+  }
+  async loadByToken(
+    accesToken: string,
+    role?: string,
+  ): Promise<AccountModel | null> {
+    const accountCollection = await MongoHelper.getCollection("accounts");
+    const account = await accountCollection?.findOne({
+      accessToken: accesToken,
+      $or: [
+        {
+          role,
+        },
+        {
+          role: "admin",
+        },
+      ],
+    });
+    return account && MongoHelper.map(account);
   }
 }
