@@ -24,22 +24,7 @@ import {
 } from "../login/login-controller-protocols";
 
 //Factory
-const makeEmailValidator = (): EmailValidator => {
-  class EmailValidatorStub implements EmailValidator {
-    isValid(email: string): boolean {
-      return true;
-    }
-  }
-  return new EmailValidatorStub();
-};
-const makeEmailValidatorWithError = (): EmailValidator => {
-  class EmailValidatorStub implements EmailValidator {
-    isValid(email: string): boolean {
-      throw new Error();
-    }
-  }
-  return new EmailValidatorStub();
-};
+
 const makeAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
     async auth(authenticantion: AuthenticationModel): Promise<string | null> {
@@ -83,14 +68,12 @@ const makeValidation = (): Validation => {
 };
 interface SutType {
   sut: SignUpController;
-  emailValidatorStub: EmailValidator;
   addAccount: AddAccount;
   httpRequest: HttpRequest;
   validationStub: Validation;
   authenticationStub: Authentication;
 }
 const makeSut = (): SutType => {
-  const emailValidatorStub = makeEmailValidator();
   const addAccount = makeAddAccount();
   const authenticationStub = makeAuthentication();
 
@@ -103,7 +86,6 @@ const makeSut = (): SutType => {
   );
   return {
     sut,
-    emailValidatorStub,
     addAccount,
     httpRequest,
     validationStub,
