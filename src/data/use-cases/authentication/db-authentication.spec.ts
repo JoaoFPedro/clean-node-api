@@ -1,9 +1,13 @@
-import { AccountModel } from "../add-account/db-add-account-protocols";
+import {
+  Encrypter,
+  HashComparer,
+  UpdateAccessTokenRepository,
+} from "./db-authentication-protocols";
+import {
+  AccountModel,
+  LoadAccountByEmailRepository,
+} from "../add-account/db-add-account-protocols";
 import { DbAuthentication } from "./db-authentication";
-import { HashComparer } from "../../protocols/criptography/hash-comparer";
-import { UpdateAccessTokenRepository } from "../../protocols/db/account/update-access-token-repository";
-import { Encrypter } from "../../protocols/criptography/encrypter";
-import { LoadAccountByEmailRepository } from "../../protocols/db/account/load-account-by-email-repository";
 
 const makeFakeAuthentication = (): any => ({
   email: "any_@mail.com",
@@ -40,9 +44,7 @@ const makeFakeAccount = (): AccountModel => ({
   password: "hashed_password",
 });
 const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
-  class LoadAccountByEmailRepositoryStub
-    implements LoadAccountByEmailRepository
-  {
+  class LoadAccountByEmailRepositoryStub implements LoadAccountByEmailRepository {
     async loadByEmail(email: string): Promise<AccountModel> {
       const account = makeFakeAccount();
       return account;
@@ -60,7 +62,7 @@ const makeSut = (): any => {
     loadAccountByEmailRepositoryStub,
     hashComparerStub,
     tokenGeneratorStub,
-    updateAccessTokenRepositoryStub
+    updateAccessTokenRepositoryStub,
   );
   return {
     sut,
@@ -157,7 +159,7 @@ describe("DbAuthentication UseCase", () => {
 
     const jestSpy = jest.spyOn(
       updateAccessTokenRepositoryStub,
-      "updateAccessToken"
+      "updateAccessToken",
     );
     await sut.auth(makeFakeAuthentication());
 

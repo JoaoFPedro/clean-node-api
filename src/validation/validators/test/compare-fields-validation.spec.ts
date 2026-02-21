@@ -1,7 +1,4 @@
-import {
-  InvalidParamError,
-  MissingParamError,
-} from "../../../presentation/erros";
+import { InvalidParamError } from "../../../presentation/erros";
 import { CompareFields } from "..";
 
 const makeSut = (): CompareFields => {

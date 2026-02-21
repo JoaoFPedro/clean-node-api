@@ -1,10 +1,10 @@
-import { LoadAccountByEmailRepository } from "../../protocols/db/account/load-account-by-email-repository";
 import { DbAddAccount } from "./db-add-account";
 import {
   AccountModel,
   AddAccountModel,
   Hasher,
   AddAccountRepository,
+  LoadAccountByEmailRepository,
 } from "./db-add-account-protocols";
 
 const makeEncrypter = (): Hasher => {

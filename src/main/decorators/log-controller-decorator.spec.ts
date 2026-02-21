@@ -1,22 +1,19 @@
-import { LogErrorRepository } from "../../data/protocols/db/log/log-error-repository";
-import { AccountModel } from "../../domain/models/account";
-import {
-  success,
-  serverError,
-} from "../../presentation/helpers/http/http-helper";
+import { LogErrorRepository } from "@/data/protocols/db/log/log-error-repository";
+import { AccountModel } from "@/domain/models/account";
+import { success, serverError } from "@/presentation/helpers/http/http-helper";
 import {
   Controller,
   HttpRequest,
   HttpResponse,
-} from "../../presentation/protocols";
+} from "@/presentation/protocols";
 import { LogControllerDecorator } from "./log-controller-decorator";
-interface SutTypes {
+type SutTypes = {
   sut: LogControllerDecorator;
   controllerStub: Controller;
   logErrorRepositoryStub: LogErrorRepository;
   httpRequest: HttpRequest;
   error: HttpResponse;
-}
+};
 const makeController = () => {
   class ControllerStub implements Controller {
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -60,7 +57,7 @@ const makeSut = (): SutTypes => {
 
   const sut = new LogControllerDecorator(
     controllerStub,
-    logErrorRepositoryStub
+    logErrorRepositoryStub,
   );
 
   return {
