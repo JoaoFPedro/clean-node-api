@@ -1,6 +1,6 @@
 import request from "supertest";
 import { setupApp } from "../../config/app";
-import { MongoHelper } from "../../../infra/db/mongodb/helpers/mongo-helpers";
+import { MongoHelper } from "@/infra/db/mongodb/helpers/mongo-helpers";
 import { Collection } from "mongodb";
 import { Express } from "express";
 import env from "../../config/env";
@@ -79,6 +79,36 @@ describe("Survey Routes", () => {
             },
           ],
         })
+        .expect(204);
+    });
+  });
+
+  describe("GET /surveys", () => {
+    it("Should return 403 on LoadSurveys", async () => {
+      await request(app).get("/api/surveys").expect(403);
+    });
+
+    it("Should return 204 on load survey with valid accessToken", async () => {
+      const res = await accountCollection?.insertOne({
+        name: "Joao Pedro",
+        email: "any_mail@mail.com",
+        password: "123",
+      });
+      const id = res?.insertedId;
+      const accessToken = sign({ id }, env.jwtSecret);
+      await accountCollection?.updateOne(
+        {
+          _id: id,
+        },
+        {
+          $set: {
+            accessToken,
+          },
+        },
+      );
+      await request(app)
+        .get("/api/surveys")
+        .set("x-access-token", accessToken)
         .expect(204);
     });
   });
