@@ -1,8 +1,8 @@
 import {
   AddSurvey,
   SaveSurveyResultModel,
-} from "@/domain/use-cases/save-survey-result";
-import { LoadSurveyById } from "@/domain/use-cases/load-survey-by-id";
+} from "@/domain/use-cases/surve-result/save-survey-result";
+import { LoadSurveyById } from "@/domain/use-cases/survey/load-survey-by-id";
 import { InvalidParamError } from "@/presentation/erros";
 import {
   forbidden,

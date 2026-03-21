@@ -1,7 +1,7 @@
 import {
   AddAccount,
   AddAccountModel,
-} from "../../../../domain/use-cases/add-account-use-case";
+} from "../../../../domain/use-cases/add-account/add-account-use-case";
 import { AccountModel } from "../../../../domain/models/account";
 import {
   MissingParamError,

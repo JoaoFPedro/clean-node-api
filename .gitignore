@@ -2,7 +2,7 @@ node_modules
 dist
 coverage
 mcp-servers
-data
+/data
 anotacoes.md
 GUIA_CLEAN_ARCHITECTURE.md
 .vscode

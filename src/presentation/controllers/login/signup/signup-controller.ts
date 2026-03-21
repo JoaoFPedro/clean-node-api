@@ -1,5 +1,5 @@
 import { Controller, HttpRequest, HttpResponse } from "../../../protocols";
-import { AddAccount } from "../../../../domain/use-cases/add-account-use-case";
+import { AddAccount } from "../../../../domain/use-cases/add-account/add-account-use-case";
 import { Validation } from "../../../protocols/validation";
 import {
   badRequest,

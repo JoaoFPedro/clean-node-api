@@ -8,7 +8,7 @@ import {
   AccountModel,
   AddAccountModel,
 } from "../../../../presentation/controllers/login/signup/signup-controller-protocols";
-import { LoadAccountByToken } from "../../../../domain/use-cases/load-account-by-token";
+import { LoadAccountByToken } from "../../../../domain/use-cases/add-account/load-account-by-token";
 
 export class AccountMongoRepository
   implements

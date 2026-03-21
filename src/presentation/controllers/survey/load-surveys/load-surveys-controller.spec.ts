@@ -1,5 +1,5 @@
 import { LoadSurveysController } from "../load-surveys/load-surveys-controller";
-import { LoadSurveys } from "../../../../domain/use-cases/load-surveys";
+import { LoadSurveys } from "../../../../domain/use-cases/survey/load-surveys";
 import { SurveyModel } from "../../../../domain/models/load-survey-model";
 import MockDate from "mockdate";
 import {

@@ -1,7 +1,7 @@
 import {
   Authentication,
   AuthenticationModel,
-} from "@/domain/use-cases/authentication";
+} from "@/domain/use-cases/add-account/authentication";
 import {
   Encrypter,
   HashComparer,

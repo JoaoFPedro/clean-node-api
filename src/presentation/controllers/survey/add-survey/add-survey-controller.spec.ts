@@ -9,7 +9,7 @@ import { AddSurveyController } from "./add-survey-controler";
 import {
   AddSurvey,
   AddSurveyModel,
-} from "../../../../domain/use-cases/add-survey";
+} from "../../../../domain/use-cases/survey/add-survey";
 import MockDate from "mockdate";
 const makeFakeRequest = (): HttpRequest => ({
   body: {

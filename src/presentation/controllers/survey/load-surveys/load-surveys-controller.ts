@@ -1,4 +1,4 @@
-import { LoadSurveys } from "../../../../domain/use-cases/load-surveys";
+import { LoadSurveys } from "../../../../domain/use-cases/survey/load-surveys";
 import {
   noContent,
   serverError,

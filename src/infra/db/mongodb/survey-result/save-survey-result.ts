@@ -1,6 +1,6 @@
 import { SaveSurveyResultRepository } from "@/data/protocols/db/save-survey-result/save-survey-result-repository";
 import { SurveyResultModel } from "@/domain/models/survey-result";
-import { SaveSurveyResultModel } from "@/domain/use-cases/save-survey-result";
+import { SaveSurveyResultModel } from "@/domain/use-cases/surve-result/save-survey-result";
 import { MongoHelper } from "../helpers/mongo-helpers";
 import { ObjectId } from "mongodb";
 
