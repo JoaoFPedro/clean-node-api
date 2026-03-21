@@ -1,7 +1,7 @@
 import { DbAddAccount } from "./db-add-account";
 import {
   AccountModel,
-  AddAccountModel,
+  AddAccountParams,
   Hasher,
   AddAccountRepository,
   LoadAccountByEmailRepository,
@@ -17,7 +17,7 @@ const makeEncrypter = (): Hasher => {
 };
 const makeAddAccountRespository = (): AddAccountRepository => {
   class AddAccountRepositoryStub implements AddAccountRepository {
-    async add(account: AddAccountModel): Promise<AccountModel | null> {
+    async add(account: AddAccountParams): Promise<AccountModel | null> {
       const fakeAccount = makeFakeAccount();
       return fakeAccount;
     }
@@ -42,10 +42,10 @@ interface SutType {
   sut: DbAddAccount;
   encrypterStub: Hasher;
   addAccountRepositoryStub: AddAccountRepository;
-  accountData: AddAccountModel;
+  accountData: AddAccountParams;
   loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository;
 }
-const makeFakeAccountData = (): AddAccountModel => ({
+const makeFakeAccountData = (): AddAccountParams => ({
   name: "any_name",
   email: "any_email",
   password: "any_password",

@@ -1,6 +1,6 @@
 import {
   Authentication,
-  AuthenticationModel,
+  AuthenticationParams,
 } from "@/domain/use-cases/add-account/authentication";
 import {
   Encrypter,
@@ -16,7 +16,7 @@ export class DbAuthentication implements Authentication {
     private readonly encrypter: Encrypter,
     private readonly updateAccessTokenRepository: UpdateAccessTokenRepository,
   ) {}
-  async auth(authenticantion: AuthenticationModel): Promise<string | null> {
+  async auth(authenticantion: AuthenticationParams): Promise<string | null> {
     const loadAccount = await this.loadAccountByEmailRepositoryStub.loadByEmail(
       authenticantion.email,
     );

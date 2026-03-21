@@ -1,6 +1,6 @@
 import {
   AddAccount,
-  AddAccountModel,
+  AddAccountParams,
 } from "../../../../domain/use-cases/add-account/add-account-use-case";
 import { AccountModel } from "../../../../domain/models/account";
 import {
@@ -20,14 +20,14 @@ import {
 } from "../../../helpers/http/http-helper";
 import {
   Authentication,
-  AuthenticationModel,
+  AuthenticationParams,
 } from "../login/login-controller-protocols";
 
 //Factory
 
 const makeAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    async auth(authenticantion: AuthenticationModel): Promise<string | null> {
+    async auth(authenticantion: AuthenticationParams): Promise<string | null> {
       return "any_token";
     }
   }
@@ -35,7 +35,7 @@ const makeAuthentication = (): Authentication => {
 };
 const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
-    async add(account: AddAccountModel): Promise<AccountModel> {
+    async add(account: AddAccountParams): Promise<AccountModel> {
       const fakeAccount = makeFakeAccount();
       return fakeAccount;
     }

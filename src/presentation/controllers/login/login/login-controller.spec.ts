@@ -10,7 +10,7 @@ import { Validation } from "../../../protocols/validation";
 import { LoginController } from "./login-controller";
 import {
   Authentication,
-  AuthenticationModel,
+  AuthenticationParams,
 } from "./login-controller-protocols";
 
 interface SutType {
@@ -30,7 +30,7 @@ const makeValidation = (): Validation => {
 
 const makeAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    async auth(authenticantion: AuthenticationModel): Promise<string | null> {
+    async auth(authenticantion: AuthenticationParams): Promise<string | null> {
       return "any_token";
     }
   }

@@ -1,6 +1,6 @@
 import {
   AddSurvey,
-  SaveSurveyResultModel,
+  SaveSurveyResultParams,
 } from "@/domain/use-cases/surve-result/save-survey-result";
 import { LoadSurveyById } from "@/domain/use-cases/survey/load-survey-by-id";
 import { InvalidParamError } from "@/presentation/erros";

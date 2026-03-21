@@ -1,11 +1,11 @@
 import { MongoHelper } from "../helpers/mongo-helpers";
 import { AddSurveyRepository } from "../../../../data/protocols/db/survey/add-survey-repository";
-import { AddSurveyModel } from "../../../../domain/use-cases/survey/add-survey";
+import { AddSurveyParams } from "../../../../domain/use-cases/survey/add-survey";
 import { LoadSurveysRepository } from "../../../../data/protocols/db/survey/load-surveys-repository";
 import { SurveyModel } from "../../../../domain/models/load-survey-model";
 import { LoadSurveyByIdRepository } from "@/data/protocols/db/survey/load-survey-repository-by-id ";
 import { ObjectId } from "mongodb";
-import { SaveSurveyResultModel } from "@/domain/use-cases/surve-result/save-survey-result";
+import { SaveSurveyResultParams } from "@/domain/use-cases/surve-result/save-survey-result";
 import { SurveyResultModel } from "@/domain/models/survey-result";
 
 export class SurveyMongoRepository
@@ -14,7 +14,7 @@ export class SurveyMongoRepository
     LoadSurveysRepository,
     LoadSurveyByIdRepository
 {
-  async add(surveyData: AddSurveyModel): Promise<void> {
+  async add(surveyData: AddSurveyParams): Promise<void> {
     const surveyCollection = await MongoHelper.getCollection("surveys");
     const insertSurvey = await surveyCollection?.insertOne(surveyData);
     await surveyCollection?.findOne({
@@ -33,7 +33,7 @@ export class SurveyMongoRepository
     });
     return MongoHelper.map(surveyData);
   }
-  async save(data: SaveSurveyResultModel): Promise<SurveyResultModel> {
+  async save(data: SaveSurveyResultParams): Promise<SurveyResultModel> {
     const surveyCollection = await MongoHelper.getCollection("surveyResults");
     const updatedCollection = await surveyCollection?.updateOne(
       { surveyId: data.surveyId, accountId: data.accountId },

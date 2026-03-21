@@ -8,7 +8,7 @@ import { Validation } from "../../../protocols/validation";
 import { AddSurveyController } from "./add-survey-controler";
 import {
   AddSurvey,
-  AddSurveyModel,
+  AddSurveyParams,
 } from "../../../../domain/use-cases/survey/add-survey";
 import MockDate from "mockdate";
 const makeFakeRequest = (): HttpRequest => ({
@@ -33,7 +33,7 @@ const makeValidation = () => {
 };
 const makeAddSurvey = () => {
   class AddSurveyStub implements AddSurvey {
-    async add(data: AddSurveyModel): Promise<void> {
+    async add(data: AddSurveyParams): Promise<void> {
       return new Promise((resolve) => resolve());
     }
   }

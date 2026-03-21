@@ -10,7 +10,7 @@ import {
 import { InvalidParamError } from "@/presentation/erros";
 import {
   AddSurvey,
-  SaveSurveyResultModel,
+  SaveSurveyResultParams,
 } from "@/domain/use-cases/surve-result/save-survey-result";
 import { SurveyResultModel } from "@/domain/models/survey-result";
 import MockDate from "mockdate";
@@ -52,7 +52,7 @@ const makeFakeLoadSurveyById = (): LoadSurveyById => {
 };
 const makeSaveSurveyResult = (): AddSurvey => {
   class SaveSurveyResultStub implements AddSurvey {
-    async save(data: SaveSurveyResultModel): Promise<SaveSurveyResultModel> {
+    async save(data: SaveSurveyResultParams): Promise<SaveSurveyResultParams> {
       return new Promise((resolve) => resolve(makeFakeSurveyResult()));
     }
   }
