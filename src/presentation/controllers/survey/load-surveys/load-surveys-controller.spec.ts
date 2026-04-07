@@ -7,47 +7,16 @@ import {
   serverError,
   success,
 } from "../../../helpers/http/http-helper";
+import { throwError } from "@/domain/test/test-helper";
+import { mockFakeSurveys } from "@/presentation/tests/test-helper";
+import { mockLoadSurveys } from "@/presentation/tests/mock-load-survey-controller";
 
-const makeFakeSurveys = (): SurveyModel[] => {
-  return [
-    {
-      id: "any_id",
-      question: "any_question",
-      answers: [
-        {
-          image: "any_image",
-          answer: "any_answer",
-        },
-      ],
-      date: new Date(),
-    },
-    {
-      id: "other_id",
-      question: "other_id_question",
-      answers: [
-        {
-          image: "other_id_image",
-          answer: "other_id_answer",
-        },
-      ],
-      date: new Date(),
-    },
-  ];
-};
-const makeFakeLoadSurveys = (): LoadSurveys => {
-  class LoadSurveysStub implements LoadSurveys {
-    async load(): Promise<SurveyModel[]> {
-      return new Promise((resolve) => resolve(makeFakeSurveys()));
-    }
-  }
-  return new LoadSurveysStub();
-};
 type SutTypes = {
   sut: LoadSurveysController;
   loadSurveysStub: LoadSurveys;
 };
 const makeSut = (): SutTypes => {
-  const loadSurveysStub = makeFakeLoadSurveys();
+  const loadSurveysStub = mockLoadSurveys();
   const sut = new LoadSurveysController(loadSurveysStub);
 
   return {
@@ -77,15 +46,13 @@ describe("Load-surveys Controller", () => {
     jest.spyOn(loadSurveysStub, "load");
     const httpResponse = await sut.handle({});
 
-    expect(httpResponse).toEqual(success(makeFakeSurveys()));
+    expect(httpResponse).toEqual(success(mockFakeSurveys()));
   });
   test("Should return 500 if LoadSurveys throws", async () => {
     const { sut, loadSurveysStub } = makeSut();
     jest
       .spyOn(loadSurveysStub, "load")
-      .mockReturnValueOnce(
-        new Promise((resolve, reject) => reject(new Error())),
-      );
+      .mockImplementationOnce(() => throwError());
     const httpResponse = await sut.handle({});
 
     expect(httpResponse).toEqual(serverError(new Error()));

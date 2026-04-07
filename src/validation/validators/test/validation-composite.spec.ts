@@ -1,17 +1,14 @@
+import { mockValidationStub } from "@/validation/tests/mock-email-validator";
 import { MissingParamError } from "../../../presentation/erros";
 import { Validation } from "../../../presentation/protocols/validation";
 import { ValidationComposite } from "../validation-composite";
-class ValidationStub implements Validation {
-  validate(input: any): Error | null | undefined {
-    return null;
-  }
-}
+
 interface SutType {
   sut: ValidationComposite;
-  validationStubs: ValidationStub[];
+  validationStubs: Validation[];
 }
 const makeSut = (): SutType => {
-  const validationStubs = [new ValidationStub(), new ValidationStub()];
+  const validationStubs = [mockValidationStub(), mockValidationStub()];
   const sut = new ValidationComposite(validationStubs);
   return {
     sut,

@@ -1,30 +1,11 @@
+import { throwError } from "@/domain/test/test-helper";
 import { DbAddSurvey } from "../add-survey/db-add-survey";
-import {
-  AddSurveyParams,
-  AddSurveyRepository,
-} from "./db-add-survey-protocols";
 import MockDate from "mockdate";
+import { mockAddSurveyRepository } from "@/data/test/mock-db-survey";
+import { mockFakeAddSurvey } from "@/data/test/test-helper";
 
-const makeFakeAddSurvey = (): AddSurveyParams => ({
-  question: "any_question",
-  answers: [
-    {
-      image: "any_image",
-      answer: "any_answer",
-    },
-  ],
-  date: new Date(),
-});
-const makeAddSurveyRepository = () => {
-  class AddSurveyRepositoryStub implements AddSurveyRepository {
-    add(account: AddSurveyParams): Promise<void> {
-      return new Promise((resolve) => resolve());
-    }
-  }
-  return new AddSurveyRepositoryStub();
-};
 const makeSut = (): any => {
-  const addSurveyRepositoryStub = makeAddSurveyRepository();
+  const addSurveyRepositoryStub = mockAddSurveyRepository();
 
   const sut = new DbAddSurvey(addSurveyRepositoryStub);
 
@@ -44,7 +25,7 @@ describe("DBAddSurvey Use case", () => {
   test("Should call AddSurveyRepository with correct values", async () => {
     const { sut, addSurveyRepositoryStub } = makeSut();
     const jestSpy = jest.spyOn(addSurveyRepositoryStub, "add");
-    const surveyData = makeFakeAddSurvey();
+    const surveyData = mockFakeAddSurvey();
     sut.add(surveyData);
 
     expect(jestSpy).toHaveBeenLastCalledWith(surveyData);
@@ -54,11 +35,9 @@ describe("DBAddSurvey Use case", () => {
     const { sut, addSurveyRepositoryStub } = makeSut();
     jest
       .spyOn(addSurveyRepositoryStub, "add")
-      .mockReturnValueOnce(
-        new Promise((resolve, reject) => reject(new Error())),
-      );
+      .mockImplementationOnce(() => throwError());
 
-    const promise = sut.add(makeFakeAddSurvey());
+    const promise = sut.add(mockFakeAddSurvey());
     await expect(promise).rejects.toThrow();
   });
 });

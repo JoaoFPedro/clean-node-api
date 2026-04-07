@@ -1,71 +1,29 @@
-import {
-  AddAccount,
-  AddAccountParams,
-} from "../../../../domain/use-cases/add-account/add-account-use-case";
-import { AccountModel } from "../../../../domain/models/account";
+import { AddAccount } from "../../../../domain/use-cases/add-account/add-account-use-case";
 import {
   MissingParamError,
   ServerError,
   EmailInUseError,
 } from "../../../erros";
-import { EmailValidator, HttpRequest } from "../../../protocols";
+import { HttpRequest } from "../../../protocols";
 import { SignUpController } from "./signup-controller";
 import { Validation } from "../../../protocols/validation";
 import {
   serverError,
   success,
   badRequest,
-  unauthorized,
   forbidden,
 } from "../../../helpers/http/http-helper";
+import { Authentication } from "../login/login-controller-protocols";
+import { throwError } from "@/domain/test/test-helper";
+import { mockFakeRequest } from "@/data/test/test-helper";
 import {
-  Authentication,
-  AuthenticationParams,
-} from "../login/login-controller-protocols";
+  mockAuthentication,
+  mockValidation,
+} from "@/presentation/tests/mock-login-controller";
+import { mockAddAccount } from "@/presentation/tests/mock-signup-controller";
 
 //Factory
 
-const makeAuthentication = (): Authentication => {
-  class AuthenticationStub implements Authentication {
-    async auth(authenticantion: AuthenticationParams): Promise<string | null> {
-      return "any_token";
-    }
-  }
-  return new AuthenticationStub();
-};
-const makeAddAccount = (): AddAccount => {
-  class AddAccountStub implements AddAccount {
-    async add(account: AddAccountParams): Promise<AccountModel> {
-      const fakeAccount = makeFakeAccount();
-      return fakeAccount;
-    }
-  }
-  return new AddAccountStub();
-};
-const makeFakeAccount = (): AccountModel => ({
-  id: "any_id",
-  name: "any_name",
-  email: "any_email",
-  password: "any_password",
-});
-const makeFakeRequest = (): HttpRequest => {
-  return {
-    body: {
-      name: "any_name",
-      email: "any_email@mail.com",
-      password: "any_password",
-      confirmationPassword: "any_password",
-    },
-  };
-};
-const makeValidation = (): Validation => {
-  class ValidationStub implements Validation {
-    validate(input: any): Error | null {
-      return null;
-    }
-  }
-  return new ValidationStub();
-};
 interface SutType {
   sut: SignUpController;
   addAccount: AddAccount;
@@ -74,11 +32,11 @@ interface SutType {
   authenticationStub: Authentication;
 }
 const makeSut = (): SutType => {
-  const addAccount = makeAddAccount();
-  const authenticationStub = makeAuthentication();
+  const addAccount = mockAddAccount();
+  const authenticationStub = mockAuthentication();
 
-  const httpRequest = makeFakeRequest();
-  const validationStub = makeValidation();
+  const httpRequest = mockFakeRequest();
+  const validationStub = mockValidation();
   const sut = new SignUpController(
     addAccount,
     validationStub,
@@ -100,7 +58,7 @@ describe("SignUp Controller", () => {
     sut.handle(httpRequest);
     expect(jestSpy).toHaveBeenCalledWith({
       name: "any_name",
-      email: "any_email@mail.com",
+      email: "any_mail@gmail.com",
       password: "any_password",
     });
   });
@@ -148,10 +106,10 @@ describe("SignUp Controller", () => {
     const { sut, authenticationStub } = makeSut();
     const authSpy = jest.spyOn(authenticationStub, "auth");
 
-    await sut.handle(makeFakeRequest());
+    await sut.handle(mockFakeRequest());
 
     expect(authSpy).toHaveBeenCalledWith({
-      email: "any_email@mail.com",
+      email: "any_mail@gmail.com",
       password: "any_password",
     });
   });
@@ -160,11 +118,9 @@ describe("SignUp Controller", () => {
     const { sut, authenticationStub } = makeSut();
     const jestSpy = jest
       .spyOn(authenticationStub, "auth")
-      .mockReturnValueOnce(
-        new Promise((resolve, reject) => reject(new Error())),
-      ); //assim pq o metodo é async
+      .mockImplementationOnce(() => throwError()); //assim pq o metodo é async
 
-    const httpResponse = await sut.handle(makeFakeRequest());
+    const httpResponse = await sut.handle(mockFakeRequest());
 
     expect(httpResponse).toEqual(serverError(new Error()));
   });

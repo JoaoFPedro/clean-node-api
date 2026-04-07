@@ -4,6 +4,8 @@ import { SurveyMongoRepository } from "../survey/survey-mongo-repository";
 import { SurveyModel } from "@/domain/models/load-survey-model";
 import { AccountModel } from "@/domain/models/account";
 import { SurveyResultMongoRepository } from "./save-survey-result";
+import { mockAddAccountParams } from "@/domain/test/mock-account";
+import { mockAddSurveyOneAnswer } from "@/domain/test/mock-survey";
 
 const { MongoClient } = require("mongodb");
 
@@ -21,25 +23,14 @@ const makeSut = (): SutType => {
   };
 };
 const makeSurvey = async () => {
-  const res = await surveyCollection?.insertOne({
-    question: "any_question",
-    answers: [
-      { image: "any_image", answer: "any_answer" },
-      { answer: "other_answer" },
-    ],
-    date: new Date(),
-  });
+  const res = await surveyCollection?.insertOne(mockAddSurveyOneAnswer());
   const surveyDoc = await surveyCollection?.findOne({ _id: res?.insertedId });
   if (!surveyDoc) throw new Error("Survey not found");
   return surveyDoc; // return raw document
 };
 
 const makeAccount = async () => {
-  const res = await accountCollection?.insertOne({
-    name: "any_name",
-    email: "any_email",
-    password: "any_password",
-  });
+  const res = await accountCollection?.insertOne(mockAddAccountParams());
   const accountDoc = await accountCollection?.findOne({ _id: res?.insertedId });
   return accountDoc; // return raw document
 };

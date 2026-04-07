@@ -3,35 +3,16 @@ import { LoadSurveyById } from "@/domain/use-cases/survey/load-survey-by-id";
 import MockDate from "mockdate";
 import { DbLoadSurveyById } from "./db-load-survey-by-id";
 import { SurveyModel } from "../load-surveys/db-load-surveys-protocols";
+import { throwError } from "@/domain/test/test-helper";
+import { mockLoadSurveyByIdRepository } from "@/data/test/mock-db-survey";
+import { mockFakeSurveyById } from "@/data/test/test-helper";
 
-const makeLoadSurveyByIdRepository = () => {
-  class LoadSurveyByIdRepositoryStub implements LoadSurveyByIdRepository {
-    loadById(id: string): Promise<SurveyModel> {
-      return new Promise((resolve) => resolve(makeFakeSurveyById()));
-    }
-  }
-  return new LoadSurveyByIdRepositoryStub();
-};
-const makeFakeSurveyById = (): SurveyModel => {
-  return {
-    id: "any_id",
-    question: "any_question",
-    answers: [
-      {
-        image: "any_image",
-        answer: "any_answer",
-      },
-    ],
-
-    date: new Date(),
-  };
-};
 type SutTypes = {
   sut: LoadSurveyById;
   loadSurveyByIdRepositoryStub: LoadSurveyByIdRepository;
 };
 const makeSut = (): SutTypes => {
-  const loadSurveyByIdRepositoryStub = makeLoadSurveyByIdRepository();
+  const loadSurveyByIdRepositoryStub = mockLoadSurveyByIdRepository();
   const sut = new DbLoadSurveyById(loadSurveyByIdRepositoryStub);
 
   return {
@@ -59,15 +40,13 @@ describe("Load-survey-by-id Controller", () => {
 
     jest.spyOn(loadSurveyByIdRepositoryStub, "loadById");
     const surveyData = await sut.load("any_id");
-    expect(surveyData).toEqual(makeFakeSurveyById());
+    expect(surveyData).toEqual(mockFakeSurveyById());
   });
   test("Should return 500 if loadSurveyByIdRepository throws", async () => {
     const { sut, loadSurveyByIdRepositoryStub } = makeSut();
     jest
       .spyOn(loadSurveyByIdRepositoryStub, "loadById")
-      .mockReturnValueOnce(
-        new Promise((resolve, reject) => reject(new Error())),
-      );
+      .mockImplementationOnce(() => throwError());
     const httpResponse = sut.load("any_id");
     await expect(httpResponse).rejects.toThrow();
   });

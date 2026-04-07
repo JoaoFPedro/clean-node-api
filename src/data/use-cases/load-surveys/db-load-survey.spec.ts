@@ -1,3 +1,4 @@
+import { throwError } from "@/domain/test/test-helper";
 import { DbLoadSurveys } from "./db-load-survey";
 import {
   LoadSurveys,
@@ -5,48 +6,15 @@ import {
   SurveyModel,
 } from "./db-load-surveys-protocols";
 import MockDate from "mockdate";
-
-const makeFakeSurveys = (): SurveyModel[] => {
-  return [
-    {
-      id: "any_id",
-      question: "any_question",
-      answers: [
-        {
-          image: "any_image",
-          answer: "any_answer",
-        },
-      ],
-      date: new Date(),
-    },
-    {
-      id: "other_id",
-      question: "other_id_question",
-      answers: [
-        {
-          image: "other_id_image",
-          answer: "other_id_answer",
-        },
-      ],
-      date: new Date(),
-    },
-  ];
-};
-const makeLoadSurveysRepository = () => {
-  class LoadSurveysRepositoryStub implements LoadSurveysRepository {
-    loadSurveys(): Promise<SurveyModel[]> {
-      return new Promise((resolve) => resolve(makeFakeSurveys()));
-    }
-  }
-  return new LoadSurveysRepositoryStub();
-};
+import { mockLoadSurveysRepository } from "@/data/test/mock-db-survey";
+import { mockFakeSurveys } from "@/data/test/test-helper";
 
 type SutTypes = {
   sut: LoadSurveys;
   loadSurveysRepositoryStub: LoadSurveysRepository;
 };
 const makeSut = (): SutTypes => {
-  const loadSurveysRepositoryStub = makeLoadSurveysRepository();
+  const loadSurveysRepositoryStub = mockLoadSurveysRepository();
   const sut = new DbLoadSurveys(loadSurveysRepositoryStub);
 
   return {
@@ -71,22 +39,20 @@ describe("Load-surveys Controller", () => {
   test("Should return a list of surveys", async () => {
     class LoadSurveysRepositoryStub implements LoadSurveysRepository {
       loadSurveys(): Promise<SurveyModel[]> {
-        return new Promise((resolve) => resolve(makeFakeSurveys()));
+        return new Promise((resolve) => resolve(mockFakeSurveys()));
       }
     }
     const loadSurveyRepositoryStub = new LoadSurveysRepositoryStub();
     const sut = new DbLoadSurveys(loadSurveyRepositoryStub);
     jest.spyOn(loadSurveyRepositoryStub, "loadSurveys");
     const surveysData = await sut.load();
-    expect(surveysData).toEqual(makeFakeSurveys());
+    expect(surveysData).toEqual(mockFakeSurveys());
   });
   test("Should return 500 if loadSurveysRepository throws", async () => {
     const { sut, loadSurveysRepositoryStub } = makeSut();
     jest
       .spyOn(loadSurveysRepositoryStub, "loadSurveys")
-      .mockReturnValueOnce(
-        new Promise((resolve, reject) => reject(new Error())),
-      );
+      .mockImplementationOnce(() => throwError());
     const httpResponse = sut.load();
     await expect(httpResponse).rejects.toThrow();
   });

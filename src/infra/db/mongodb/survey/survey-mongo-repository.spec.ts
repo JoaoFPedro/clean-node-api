@@ -1,6 +1,10 @@
 import { Collection, ObjectId } from "mongodb";
 import { MongoHelper } from "../helpers/mongo-helpers";
 import { SurveyMongoRepository } from "../survey/survey-mongo-repository";
+import {
+  mockAddSurveyOneAnswer,
+  mockAddSurveyTwoAnswers,
+} from "@/domain/test/mock-survey";
 
 const { MongoClient } = require("mongodb");
 
@@ -29,19 +33,7 @@ describe("add", () => {
   };
   it("Should add a survey on success", async () => {
     const { sut } = makeSut();
-    await sut.add({
-      question: "any_question",
-      answers: [
-        {
-          image: "any_image",
-          answer: "any_answer",
-        },
-        {
-          answer: "other_answer",
-        },
-      ],
-      date: new Date(),
-    });
+    await sut.add(mockAddSurveyOneAnswer());
     const survey = await surveyCollection?.findOne({
       question: "any_question",
     });
@@ -72,28 +64,7 @@ describe("load", () => {
     };
   };
   it("Should load all survey on success", async () => {
-    await surveyCollection?.insertMany([
-      {
-        question: "any_question",
-        answers: [
-          {
-            image: "any_image",
-            answer: "any_answer",
-          },
-        ],
-        date: new Date(),
-      },
-      {
-        question: "other_question",
-        answers: [
-          {
-            image: "other_question_image",
-            answer: "other_question_answer",
-          },
-        ],
-        date: new Date(),
-      },
-    ]);
+    await surveyCollection?.insertMany(mockAddSurveyTwoAnswers());
     const { sut } = makeSut();
     const surveys = await sut.loadSurveys();
 
@@ -125,16 +96,7 @@ describe("loadById", () => {
     };
   };
   it("Should load all survey on success", async () => {
-    const res = await surveyCollection?.insertOne({
-      question: "any_question",
-      answers: [
-        {
-          image: "any_image",
-          answer: "any_answer",
-        },
-      ],
-      date: new Date(),
-    });
+    const res = await surveyCollection?.insertOne(mockAddSurveyOneAnswer());
     const { sut } = makeSut();
     const id = res?.insertedId;
 

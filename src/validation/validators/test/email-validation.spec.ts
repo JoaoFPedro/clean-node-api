@@ -2,27 +2,11 @@ import { InvalidParamError } from "@/presentation/erros";
 import { EmailValidator } from "@/validation/protocols/email-validator";
 import { EmailValidation } from "../email-validation";
 import { Validation } from "@/presentation/protocols";
+import { mockFakeRequest } from "@/data/test/test-helper";
+import { mockEmailValidator } from "@/validation/tests/mock-email-validator";
 
 //Factory
-const makeEmailValidator = (): EmailValidator => {
-  class EmailValidatorStub implements EmailValidator {
-    isValid(email: string): boolean {
-      return true;
-    }
-  }
-  return new EmailValidatorStub();
-};
 
-const makeFakeRequest = () => {
-  return {
-    body: {
-      name: "any_name",
-      email: "any_email@mail.com",
-      password: "any_password",
-      confirmationPassword: "any_password",
-    },
-  };
-};
 const makeValidation = (): Validation => {
   class ValidationStub implements Validation {
     validate(input: any): Error | null {
@@ -36,10 +20,8 @@ interface SutType {
   emailValidatorStub: EmailValidator;
 }
 const makeSut = (): SutType => {
-  const emailValidatorStub = makeEmailValidator();
+  const emailValidatorStub = mockEmailValidator();
 
-  const httpRequest = makeFakeRequest();
-  const validationStub = makeValidation();
   const sut = new EmailValidation(emailValidatorStub, "email");
   return {
     sut,
